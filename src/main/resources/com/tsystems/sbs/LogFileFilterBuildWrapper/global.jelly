@@ -1,0 +1,48 @@
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+  <!--
+    This Jelly script is used to produce the global configuration option.
+
+    Hudson uses a set of tag libraries to provide uniformity in forms.
+    To determine where this tag is defined, first check the namespace URI,
+    and then look under $HUDSON/views/. For example, <f:section> is defined
+    in $HUDSON/views/lib/form/section.jelly.
+
+    It's also often useful to just check other similar scripts to see what
+    tags they use. Views are always organized according to its owner class,
+    so it should be straightforward to find them.
+  -->
+  
+  	<f:section title="Log File Filter Global config">
+  	
+  		<!-- Determines whether the console filter is applied for all projects, using global settings -->
+  		<f:entry title="Enable globally" field="enabledGlobally">
+  			<f:checkbox checked="${it.enabledGlobally}" />
+  		</f:entry>
+  		
+		<!-- Defines the regexp patterns to filter the console logs -->
+		<f:entry title="Global regexp pairs" field="regexpPairs">
+			<f:repeatable name="Regexp Pairs" items="${descriptor.regexpPairs}" var="regexpPair">
+				<table width="100%">
+					<tr>
+						<td width="10%" align="right">Regexp</td>
+						<td width="30%">
+							<f:textbox name="regexpPair.regexp" value="${!empty regexpPair.regexp?regexpPair.regexp:''}"/>
+						</td>
+						
+						<td width="10%" align="right">Replacement</td>
+						<td width="30%">
+							<f:textbox name="regexpPair.replacement" value="${!empty regexpPair.replacement?regexpPair.replacement:''}"/>
+						</td>
+						<td width="20%" align="right"><f:repeatableDeleteButton/></td>
+					</tr>
+				</table>
+			</f:repeatable>
+		</f:entry>
+  		
+	</f:section>
+	
+</j:jelly>
+
+
+  
