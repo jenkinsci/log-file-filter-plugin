@@ -20,9 +20,15 @@ import jenkins.tasks.SimpleBuildWrapper;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+/**
+ * This class deals with the plugin configuration and persistence of the data.
+ * @author ccapdevi
+ *
+ */
 public class LogFileFilterBuildWrapper extends SimpleBuildWrapper {
 
 	private final boolean enabledGlobally;
+	private final boolean enabledDefaultRegexp;
 	private final Set<RegexpPair> regexpPairs;
 
 	/**
@@ -30,14 +36,11 @@ public class LogFileFilterBuildWrapper extends SimpleBuildWrapper {
 	 * values from the configuration form page with matching parameter names.
 	 */
 	@DataBoundConstructor
-	public LogFileFilterBuildWrapper(boolean enabledGlobally,Set<RegexpPair> regexpPairs){
+	public LogFileFilterBuildWrapper(boolean enabledGlobally,boolean enabledDefaultRegexp,Set<RegexpPair> regexpPairs){
 		this.enabledGlobally = enabledGlobally;
+		this.enabledDefaultRegexp = enabledDefaultRegexp;
 		this.regexpPairs = regexpPairs;
 	};
-
-	public Set<RegexpPair> getRegexpPairs() {
-		return regexpPairs;
-	}
 
 	@Override
 	public void setUp(Context context, Run<?, ?> build, FilePath workspace, Launcher launcher, TaskListener listener, EnvVars initialEnvironment) throws IOException, InterruptedException {
@@ -48,7 +51,7 @@ public class LogFileFilterBuildWrapper extends SimpleBuildWrapper {
 	 * Descriptor for {@link LogFileFilterBuildWrapper}.
 	 * The class is marked as public so that it can be accessed from views.
 	 * 
-	 * See LogFileFilterBuilder/*.jelly for the actual HTML fragment for the configuration screen.
+	 * See LogFileFilterBuildWrapper/*.jelly for the actual HTML fragment for the configuration screen.
 	 */
 	// this annotation tells Hudson that this is the implementation of an extension point
 	@Extension
@@ -66,7 +69,15 @@ public class LogFileFilterBuildWrapper extends SimpleBuildWrapper {
 		 * Determines whether the plugin is enabled globally for ALL BUILDS.
 		 */
 		private boolean enabledGlobally;
+		
+		/**
+		 * Determines whether the regexp replacements which come fixed with the plugin are enabled.
+		 */
+		private boolean enabledDefaultRegexp;
 
+		/**
+		 * Represents the custom regexp pairs specified by the user.
+		 */
 		private Set<RegexpPair> regexpPairs;
 
 		public DescriptorImpl(){
@@ -101,6 +112,9 @@ public class LogFileFilterBuildWrapper extends SimpleBuildWrapper {
 			//enabledGlobally (determines whether or not to filter the console output using global parameters)
 			if(json.has("enabledGlobally"))
 				enabledGlobally = json.getBoolean("enabledGlobally");
+			
+			if(json.has("enabledDefaultRegexp"))
+				enabledDefaultRegexp = json.getBoolean("enabledDefaultRegexp");
 				
 			//The regexp pairs which determine which contents in the console will be filtered
 			if(json.has("Regexp Pairs")){
@@ -140,6 +154,14 @@ public class LogFileFilterBuildWrapper extends SimpleBuildWrapper {
 		public void setEnabledGlobally(boolean enabledGlobally){
 			this.enabledGlobally = enabledGlobally;
 		}
+		
+		public boolean isEnabledDefaultRegexp() {
+			return enabledDefaultRegexp;
+		}
+
+		public void setEnabledDefaultRegexp(boolean enabledDefaultRegexp) {
+			this.enabledDefaultRegexp = enabledDefaultRegexp;
+		}
 
 		public Set<RegexpPair> getRegexpPairs() {
 			if(regexpPairs==null)
@@ -149,16 +171,6 @@ public class LogFileFilterBuildWrapper extends SimpleBuildWrapper {
 
 		public void setRegexpPairs(Set<RegexpPair> regexpPairs) {
 			this.regexpPairs = regexpPairs;
-		}
-
-		public RegexpPair getRegexpPair (String regexp){
-			//Only iterate regexpPairs if it's not null
-			if(regexpPairs!=null){
-				for(RegexpPair regexpPair : regexpPairs)
-					if(regexpPair.getRegexp().equals(regexp))
-						return regexpPair;
-			}
-			return null;//The desired regexpPair hasn't been found
 		}
 
 	}

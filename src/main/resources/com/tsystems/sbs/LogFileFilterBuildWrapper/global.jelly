@@ -20,8 +20,13 @@
   			<f:checkbox checked="${it.enabledGlobally}" />
   		</f:entry>
   		
+  		<!-- Determines whether the default expression which come fixed with the plugin are enabled --> 
+  		<f:entry title="Enable default regexp" field="enabledDefaultRegexp">
+  			<f:checkbox checked="${it.enabledDefaultRegexp}" />
+  		</f:entry>
+  		
 		<!-- Defines the regexp patterns to filter the console logs -->
-		<f:entry title="Global regexp pairs" field="regexpPairs">
+		<f:entry title="Custom regexp pairs" field="regexpPairs">
 			<f:repeatable name="Regexp Pairs" items="${descriptor.regexpPairs}" var="regexpPair">
 				<table width="100%">
 					<tr>
