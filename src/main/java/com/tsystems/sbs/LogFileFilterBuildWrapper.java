@@ -31,7 +31,7 @@ public class LogFileFilterBuildWrapper extends SimpleBuildWrapper {
 	private final boolean enabledDefaultRegexp;
 	private final Set<RegexpPair> regexpPairs;
 
-	/**
+	/*
 	 * This annotation tells Hudson to call this constructor, with
 	 * values from the configuration form page with matching parameter names.
 	 */
@@ -76,7 +76,7 @@ public class LogFileFilterBuildWrapper extends SimpleBuildWrapper {
 		private boolean enabledDefaultRegexp;
 
 		/**
-		 * Represents the custom regexp pairs specified by the user.
+		 * Represents the custom regexp pairs specified by the user in the global settings.
 		 */
 		private Set<RegexpPair> regexpPairs;
 
