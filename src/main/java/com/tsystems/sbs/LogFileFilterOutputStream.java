@@ -10,109 +10,94 @@ import java.util.regex.Pattern;
 import com.tsystems.sbs.LogFileFilterBuildWrapper.DescriptorImpl;
 
 import hudson.console.LineTransformationOutputStream;
+import java.util.Collections;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import jenkins.model.Jenkins;
 
 /**
- * This class deals with the actual filtering of the console using the configured regexes.
- * Bear in mind that for now only one line expressions are possible.
+ * This class deals with the actual filtering of the console using the configured regexes. Bear in mind that for now
+ * only one line expressions are possible.
+ *
  * @author ccapdevi
  *
  */
 public class LogFileFilterOutputStream extends LineTransformationOutputStream {
+    private static final Logger LOGGER = Logger.getLogger(LogFileFilterOutputStream.class.getName());
 
-	//Logging
-	private OutputStream logger;
-	private final Charset charset;
-	//Global settings
-	private boolean isEnabledGlobally;
-	private boolean isEnabledDefaultRegexp;
-	private Set<RegexpPair> defaultRegexpPairs;
-	private Set<RegexpPair> customRegexpPairs;
+    //Logging
+    private final OutputStream logger;
+    private final Charset charset;
+    //Global settings
+    private final boolean isEnabledGlobally;
+    private final boolean isEnabledDefaultRegexp;
+    private final Set<RegexpPair> defaultRegexpPairs;
+    private final Set<RegexpPair> customRegexpPairs;
+    private String jobName;
 
-	public LogFileFilterOutputStream (OutputStream out,Charset charset){
-		this.logger = out;
-		this.charset = charset;
 
-		//Load global settings
-		try {
-			LogFileFilterBuildWrapper.DescriptorImpl descriptor = (DescriptorImpl) Jenkins.getInstance().getDescriptor(LogFileFilterBuildWrapper.class);
-			
-			isEnabledGlobally = descriptor.isEnabledGlobally();
-			isEnabledDefaultRegexp = descriptor.isEnabledDefaultRegexp();
-			if(isEnabledGlobally) {
-				//Load regexes
-				customRegexpPairs = descriptor.getRegexpPairs();
-				if(isEnabledDefaultRegexp)
-					defaultRegexpPairs = DefaultRegexpPairs.getDefaultRegexes();
-			}
-		} catch (NullPointerException e){
-			//Log warning
-			try {
-				logger.write("[LogFileFilterWarning: the descriptor for Log File Filter plugin hasn't been found. No filter will be applied.] ".getBytes(charset));
-				//Disable the filtering
-				isEnabledGlobally = false;
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-		}
-	}
+    public LogFileFilterOutputStream(OutputStream out, Charset charset, String jobName) {
+        this.jobName = jobName;
+        this.logger = out;
+        this.charset = charset;
+        LogFileFilterBuildWrapper.DescriptorImpl descriptor
+                = (DescriptorImpl) Jenkins.getInstance().getDescriptor(LogFileFilterBuildWrapper.class);
 
-	@Override
-	protected void eol(byte[] bytes, int len) throws IOException {
+        isEnabledGlobally = descriptor.isEnabledGlobally();
+        isEnabledDefaultRegexp = descriptor.isEnabledDefaultRegexp();
+        if (isEnabledGlobally) {
+            //Load regexes
+            customRegexpPairs = descriptor.getRegexpPairs();
+            if (isEnabledDefaultRegexp) {
+                defaultRegexpPairs = DefaultRegexpPairs.getDefaultRegexes();
+            } else {
+                defaultRegexpPairs = Collections.EMPTY_SET;
+            }
+        } else {
+            customRegexpPairs = Collections.EMPTY_SET;
+            defaultRegexpPairs = Collections.EMPTY_SET;
+        }
+    }
 
-		if(isEnabledGlobally) {
-			String line = new String(bytes, 0, len,charset);
+    @Override
+    protected void eol(byte[] bytes, int len) throws IOException {
 
-			//Perform the actual filtering
+        if (isEnabledGlobally) {
+            final String inputLine = new String(bytes, 0, len, charset);
+            String line = inputLine;
 
-			//Filtering with default Regexes
-			if(isEnabledDefaultRegexp){
-				for(RegexpPair regexpPair : defaultRegexpPairs){
-					line = filterLine(line,regexpPair);
-				}
-			}
+            for (RegexpPair regexpPair : defaultRegexpPairs) {
+                line = filterLine(line, regexpPair);
+            }
 
-			//Filtering with custom Regexes
-			if(customRegexpPairs != null && !customRegexpPairs.isEmpty()){
-				for(RegexpPair regexpPair : customRegexpPairs){
-					line = filterLine(line,regexpPair);
-				}
-			}
+            for (RegexpPair regexpPair : customRegexpPairs) {
+                line = filterLine(line, regexpPair);
+            }
 
-			logger.write(line.getBytes(charset));
-		} else {
-			logger.write(bytes,0,len);//If the filter is not enabled, write the bytes as-is to avoid messing with the encoding
-		}
+            if (inputLine.equals(line)) {
+                logger.write(bytes, 0, len);
+            } else {
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine("Filtered logfile for " + jobName + " output " + line);
+                }
+                logger.write(line.getBytes(charset));
+            }
+        } else {
+            logger.write(bytes, 0, len);//If the filter is not enabled, write the bytes as-is to avoid messing with the encoding
+        }
 
-	}
+    }
 
-	private static String filterLine(String line,RegexpPair regexpPair){
-		try {
-			Pattern pattern = regexpPair.getCompiledRegexp();
-			Matcher matcher = pattern.matcher(line);
-
-			return matcher.replaceAll(regexpPair.getReplacement());
-		} catch (Exception e){
-			//TODO: find a more sophisticated way to check if there have already been errors for that line or log the errors for each line elsewhere outside the console output
-
-			//If there has been already a problem filtering the same line, do not log more warnings about that line
-			if(!line.contains("[LogFileFilterWarning")) {
-				return line + " [LogFileFilterWarning: error filtering the line: " + e.getMessage() + "]";
-			} else
-				return line;
-		}
-	}
-
-	@Override
-	public void close() throws IOException {
-		super.close();
-		logger.close();
-	}
-
-	@Override
-	public void flush() throws IOException {
-		super.flush();
-		logger.flush();
-	}
-
+    private static String filterLine(String line, RegexpPair regexpPair) {
+        String result;
+        try {
+            Pattern pattern = regexpPair.getCompiledRegexp();
+            Matcher matcher = pattern.matcher(line);
+            result = matcher.replaceAll(regexpPair.getReplacement());
+        } catch (Exception e) {
+            LOGGER.log(Level.WARNING, "Exeption when wrapping log output.", e);
+            result = line;
+        }
+        return result;
+    }
 }
