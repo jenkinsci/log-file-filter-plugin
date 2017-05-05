@@ -1,23 +1,15 @@
 package com.tsystems.sbs;
 
-import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.Set;
-
-import org.kohsuke.stapler.DataBoundConstructor;
-import org.kohsuke.stapler.StaplerRequest;
-
-import hudson.EnvVars;
-import hudson.Extension;
-import hudson.FilePath;
-import hudson.Launcher;
-import hudson.model.AbstractProject;
-import hudson.model.Run;
-import hudson.model.TaskListener;
-import hudson.tasks.BuildWrapperDescriptor;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import jenkins.tasks.SimpleBuildWrapper;
+
+import org.kohsuke.stapler.StaplerRequest;
+
+import hudson.Extension;
+import hudson.model.AbstractDescribableImpl;
+import hudson.model.Descriptor;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -27,32 +19,19 @@ import net.sf.json.JSONObject;
  * @author ccapdevi
  *
  */
-public class LogFileFilterBuildWrapper extends SimpleBuildWrapper {
+public class LogFileFilterConfig extends AbstractDescribableImpl<LogFileFilterConfig> {
 
-    private static final Logger LOGGER = Logger.getLogger(LogFileFilterBuildWrapper.class.getName());
-
-    /*
-	 * This annotation tells Hudson to call this constructor, with
-	 * values from the configuration form page with matching parameter names.
-     */
-    @DataBoundConstructor
-    public LogFileFilterBuildWrapper() {
-    }
-
-	@Override
-    public void setUp(Context context, Run<?, ?> build, FilePath workspace, Launcher launcher, TaskListener listener, EnvVars initialEnvironment) throws IOException, InterruptedException {
-        // nothing to do here
-    }
+    private static final Logger LOGGER = Logger.getLogger(LogFileFilterConfig.class.getName());
 
     /**
-     * Descriptor for {@link LogFileFilterBuildWrapper}. The class is marked as public so that it can be accessed from
+     * Descriptor for class LogFileFilterConfig. The class is marked as public so that it can be accessed from
      * views.
      *
      * See LogFileFilterBuildWrapper/*.jelly for the actual HTML fragment for the configuration screen.
      */
     // this annotation tells Hudson that this is the implementation of an extension point
     @Extension
-    public static final class DescriptorImpl extends BuildWrapperDescriptor {
+    public static final class DescriptorImpl extends Descriptor<LogFileFilterConfig> {
 
         /**
          * To persist global configuration information, simply store it in a field and call save().
@@ -76,7 +55,7 @@ public class LogFileFilterBuildWrapper extends SimpleBuildWrapper {
         private final Set<RegexpPair> regexpPairs = new LinkedHashSet<RegexpPair>();
 
         public DescriptorImpl() {
-            super(LogFileFilterBuildWrapper.class);
+            super(LogFileFilterConfig.class);
             load();
         }
 
@@ -85,15 +64,7 @@ public class LogFileFilterBuildWrapper extends SimpleBuildWrapper {
          */
         @Override
         public String getDisplayName() {
-            return "Log File Filter";
-        }
-
-        /**
-         * Applicable to any kind of project
-         */
-        @Override
-        public boolean isApplicable(AbstractProject<?, ?> item) {
-            return true;
+            return "";
         }
 
         @Override

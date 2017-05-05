@@ -3,16 +3,14 @@ package com.tsystems.sbs;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.util.Collections;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.tsystems.sbs.LogFileFilterBuildWrapper.DescriptorImpl;
-
 import hudson.console.LineTransformationOutputStream;
-import java.util.Collections;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import jenkins.model.Jenkins;
 
 /**
@@ -33,29 +31,36 @@ public class LogFileFilterOutputStream extends LineTransformationOutputStream {
     private final boolean isEnabledDefaultRegexp;
     private final Set<RegexpPair> defaultRegexpPairs;
     private final Set<RegexpPair> customRegexpPairs;
-    private String jobName;
+    private final String jobName;
 
 
     public LogFileFilterOutputStream(OutputStream out, Charset charset, String jobName) {
         this.jobName = jobName;
         this.logger = out;
         this.charset = charset;
-        LogFileFilterBuildWrapper.DescriptorImpl descriptor
-                = (DescriptorImpl) Jenkins.getInstance().getDescriptor(LogFileFilterBuildWrapper.class);
+        Jenkins jenkinsInstance = Jenkins.getInstance();
+        if(jenkinsInstance != null) {
+            LogFileFilterConfig.DescriptorImpl descriptor	
+            = (LogFileFilterConfig.DescriptorImpl) jenkinsInstance.getDescriptor(LogFileFilterConfig.class);
 
-        isEnabledGlobally = descriptor.isEnabledGlobally();
-        isEnabledDefaultRegexp = descriptor.isEnabledDefaultRegexp();
-        if (isEnabledGlobally) {
-            //Load regexes
-            customRegexpPairs = descriptor.getRegexpPairs();
-            if (isEnabledDefaultRegexp) {
-                defaultRegexpPairs = DefaultRegexpPairs.getDefaultRegexes();
+            isEnabledGlobally = descriptor.isEnabledGlobally();
+            isEnabledDefaultRegexp = descriptor.isEnabledDefaultRegexp();
+            if (isEnabledGlobally) {
+                //Load regexes
+                customRegexpPairs = descriptor.getRegexpPairs();
+                if (isEnabledDefaultRegexp) {
+                    defaultRegexpPairs = DefaultRegexpPairs.getDefaultRegexes();
+                } else {
+                    defaultRegexpPairs = Collections.EMPTY_SET;
+                }
             } else {
+                customRegexpPairs = Collections.EMPTY_SET;
                 defaultRegexpPairs = Collections.EMPTY_SET;
             }
         } else {
-            customRegexpPairs = Collections.EMPTY_SET;
-            defaultRegexpPairs = Collections.EMPTY_SET;
+            IllegalStateException e = new IllegalStateException("Error loading LogFileFilter Descriptor: The Jenkins Instance is null."); 
+            LOGGER.log(Level.SEVERE,"",e);
+            throw e;
         }
     }
 
@@ -95,7 +100,7 @@ public class LogFileFilterOutputStream extends LineTransformationOutputStream {
             Matcher matcher = pattern.matcher(line);
             result = matcher.replaceAll(regexpPair.getReplacement());
         } catch (Exception e) {
-            LOGGER.log(Level.WARNING, "Exeption when wrapping log output.", e);
+            LOGGER.log(Level.WARNING, "Exception when wrapping log output.", e);
             result = line;
         }
         return result;
