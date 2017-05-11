@@ -40,6 +40,13 @@
 		</license>
 	</licenses>
 
+    <scm>
+        <connection>scm:git:https://github.com/SoftwareBuildService/log-file-filter-plugin.git</connection>
+        <developerConnection>scm:git:https://github.com/SoftwareBuildService/log-file-filter-plugin.git</developerConnection>
+        <url>https://github.com/SoftwareBuildService/log-file-filter-plugin</url>
+        <tag>HEAD</tag>
+    </scm>
+
 	<!-- If you want this to appear on the wiki page: <developers> <developer> 
 		<id>bhacker</id> <name>Bob Q. Hacker</name> <email>bhacker@nowhere.net</email> 
 		</developer> </developers> -->
