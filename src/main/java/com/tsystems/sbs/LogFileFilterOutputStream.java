@@ -66,42 +66,56 @@ public class LogFileFilterOutputStream extends LineTransformationOutputStream {
 
     @Override
     protected void eol(byte[] bytes, int len) throws IOException {
-
+        boolean changed = false;
+        
         if (isEnabledGlobally) {
             final String inputLine = new String(bytes, 0, len, charset);
             String line = inputLine;
 
             for (RegexpPair regexpPair : defaultRegexpPairs) {
-                line = filterLine(line, regexpPair);
+                String newLine = filterLine(line, regexpPair);
+                if (newLine != null) {
+                    changed = true;
+                    line = newLine;
+                }
             }
 
             for (RegexpPair regexpPair : customRegexpPairs) {
-                line = filterLine(line, regexpPair);
+                String newLine = filterLine(line, regexpPair);
+                if (newLine != null) {
+                    changed = true;
+                    line = newLine;
+                }
             }
 
-            if (inputLine.equals(line)) {
-                logger.write(bytes, 0, len);
-            } else {
+            if (changed) {
                 if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine("Filtered logfile for " + jobName + " output " + line);
+                    LOGGER.log(Level.FINE, 
+                            "Filtered logfile for {0} output ''{1}''.", new Object[]{jobName, line});
                 }
                 logger.write(line.getBytes(charset));
+            } else {
+                // no change, write the bytes as-is to avoid messing with the encoding
+                logger.write(bytes, 0, len);
             }
         } else {
-            logger.write(bytes, 0, len);//If the filter is not enabled, write the bytes as-is to avoid messing with the encoding
+            logger.write(bytes, 0, len);
         }
 
     }
 
-    private static String filterLine(String line, RegexpPair regexpPair) {
-        String result;
+    private String filterLine(String line, RegexpPair regexpPair) {
+        String result = null;
         try {
             Pattern pattern = regexpPair.getCompiledRegexp();
             Matcher matcher = pattern.matcher(line);
-            result = matcher.replaceAll(regexpPair.getReplacement());
+            if (matcher.find()) {
+                result = matcher.replaceAll(regexpPair.getReplacement());
+            }
         } catch (Exception e) {
-            LOGGER.log(Level.WARNING, "Exception when wrapping log output.", e);
-            result = line;
+            LOGGER.log(Level.WARNING, 
+                    "Exception when wrapping log output for " + jobName + 
+                    " in line '" + line + "' got: '" + e + "'.", e);
         }
         return result;
     }
