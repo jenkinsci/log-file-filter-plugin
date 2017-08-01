@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 
 import hudson.console.LineTransformationOutputStream;
 import jenkins.model.Jenkins;
+import org.apache.commons.io.IOUtils;
 
 /**
  * This class deals with the actual filtering of the console using the configured regexes. Bear in mind that for now
@@ -61,6 +62,17 @@ public class LogFileFilterOutputStream extends LineTransformationOutputStream {
             IllegalStateException e = new IllegalStateException("Error loading LogFileFilter Descriptor: The Jenkins Instance is null."); 
             LOGGER.log(Level.SEVERE,"",e);
             throw e;
+        }
+    }
+
+    @Override
+    public void close() throws IOException {
+        try {
+            // need to send the final EOL before closing the actual sink.
+            super.close();
+        } finally {
+            // seems we need to do this, see JENKINS-45057.
+            IOUtils.closeQuietly(logger);
         }
     }
 
