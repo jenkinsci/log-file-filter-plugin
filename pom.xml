@@ -25,7 +25,7 @@
 			Stapler Maven plugin version required by the plugin. -->
 	</properties>
 
-	<name>File Filter Log Plugin</name>
+	<name>Log File Filter Plugin</name>
 	<description>This plugin masks the desired content from the console output.</description>
 	<url>https://github.com/SoftwareBuildService/log-file-filter-plugin</url>
 
