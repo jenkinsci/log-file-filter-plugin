@@ -17,7 +17,7 @@ public final class DefaultRegexpPairs {
             = Collections.unmodifiableSet(
                 new LinkedHashSet<RegexpPair>(Arrays.asList(
                     new RegexpPair("(https?+://[^:\\s]++):[^@\\s]++@", "$1:********@"),//Passwd URL MASKING
-                    new RegexpPair("-password=\\S*", "-password=********") //PASSWORD MASKING
+                    new RegexpPair("password=\\S*", "password=********") //PASSWORD MASKING
             )));
 
     public static Set<RegexpPair> getDefaultRegexes() {
