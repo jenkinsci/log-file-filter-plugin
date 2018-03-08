@@ -1,18 +1,19 @@
 package com.tsystems.sbs;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 
-import org.jenkinsci.plugins.workflow.steps.AbstractStepDescriptorImpl;
 import org.jenkinsci.plugins.workflow.steps.AbstractStepExecutionImpl;
-import org.jenkinsci.plugins.workflow.steps.AbstractStepImpl;
 import org.jenkinsci.plugins.workflow.steps.BodyExecutionCallback;
 import org.jenkinsci.plugins.workflow.steps.BodyInvoker;
+import org.jenkinsci.plugins.workflow.steps.Step;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
+import org.jenkinsci.plugins.workflow.steps.StepDescriptor;
+import org.jenkinsci.plugins.workflow.steps.StepExecution;
 import org.kohsuke.stapler.DataBoundConstructor;
-
-import com.google.inject.Inject;
 
 import hudson.Extension;
 import hudson.console.ConsoleLogFilter;
@@ -20,29 +21,40 @@ import hudson.console.ConsoleLogFilter;
 /**
  * Custom pipeline step that can be used without a node and build wrapper.
  */
-public class LogFileFilterStep extends AbstractStepImpl {
+public class LogFileFilterStep extends Step {
 
 	@DataBoundConstructor
     public LogFileFilterStep() {}
 	
+	@Override
+	public StepExecution start(StepContext context) throws Exception {
+		return new Execution(context);
+	}
+
     /**
      * Execution for {@link LogFileFilterStep}.
      */
-    public static class ExecutionImpl extends AbstractStepExecutionImpl {
+    public static class Execution extends AbstractStepExecutionImpl {
 
         private static final long serialVersionUID = 1L;
         
-        @Inject(optional = true)
-        private transient LogFileFilterStep step;
-
+        protected Execution(StepContext context) {
+        	super(context);
+        }
+        
+        @Override
+        public void onResume() {}
+        
         /**
          * {@inheritDoc}
          */
         @Override
         public boolean start() throws Exception {
             StepContext context = getContext();
-            context.newBodyInvoker().withContext(createConsoleLogFilter(context))
-                    .withCallback(BodyExecutionCallback.wrap(context)).start();
+            context.newBodyInvoker().
+            	withContext(createConsoleLogFilter(context)).
+            	withCallback(BodyExecutionCallback.wrap(context)).
+            	start();
             return false;
         }
 
@@ -66,11 +78,7 @@ public class LogFileFilterStep extends AbstractStepImpl {
      * Descriptor for {@link LogFileFilterStep}.
      */
     @Extension(optional = true)
-    public static class StepDescriptorImpl extends AbstractStepDescriptorImpl {
-
-        public StepDescriptorImpl() {
-            super(ExecutionImpl.class);
-        }
+    public static class StepDescriptorImpl extends StepDescriptor {
 
         @Override
         public String getDisplayName() {
@@ -92,6 +100,11 @@ public class LogFileFilterStep extends AbstractStepImpl {
         public boolean takesImplicitBlockArgument() {
             return true;
         }
+
+		@Override
+		public Set<? extends Class<?>> getRequiredContext() {
+			return new HashSet<Class<?>>();
+		}
 
     }
 

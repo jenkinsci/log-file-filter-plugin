@@ -40,29 +40,23 @@ public class LogFileFilterOutputStream extends LineTransformationOutputStream {
         this.logger = out;
         this.charset = charset;
         Jenkins jenkinsInstance = Jenkins.getInstance();
-        if(jenkinsInstance != null) {
-            LogFileFilterConfig.DescriptorImpl descriptor	
-            = (LogFileFilterConfig.DescriptorImpl) jenkinsInstance.getDescriptor(LogFileFilterConfig.class);
+        LogFileFilterConfig.DescriptorImpl descriptor	
+		= (LogFileFilterConfig.DescriptorImpl) jenkinsInstance.getDescriptorOrDie(LogFileFilterConfig.class);
 
-            isEnabledGlobally = descriptor.isEnabledGlobally();
-            isEnabledDefaultRegexp = descriptor.isEnabledDefaultRegexp();
-            if (isEnabledGlobally) {
-                //Load regexes
-                customRegexpPairs = descriptor.getRegexpPairs();
-                if (isEnabledDefaultRegexp) {
-                    defaultRegexpPairs = DefaultRegexpPairs.getDefaultRegexes();
-                } else {
-                    defaultRegexpPairs = Collections.EMPTY_SET;
-                }
-            } else {
-                customRegexpPairs = Collections.EMPTY_SET;
-                defaultRegexpPairs = Collections.EMPTY_SET;
-            }
-        } else {
-            IllegalStateException e = new IllegalStateException("Error loading LogFileFilter Descriptor: The Jenkins Instance is null."); 
-            LOGGER.log(Level.SEVERE,"",e);
-            throw e;
-        }
+		isEnabledGlobally = descriptor.isEnabledGlobally();
+		isEnabledDefaultRegexp = descriptor.isEnabledDefaultRegexp();
+		if (isEnabledGlobally) {
+			//Load regexes
+			customRegexpPairs = descriptor.getRegexpPairs();
+			if (isEnabledDefaultRegexp) {
+				defaultRegexpPairs = DefaultRegexpPairs.getDefaultRegexes();
+			} else {
+				defaultRegexpPairs = Collections.emptySet();
+			}
+		} else {
+			customRegexpPairs = Collections.emptySet();
+			defaultRegexpPairs = Collections.emptySet();
+		}
     }
 
     @Override
