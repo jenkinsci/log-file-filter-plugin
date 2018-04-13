@@ -1,6 +1,7 @@
 package com.tsystems.sbs;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,7 +22,7 @@ import hudson.console.ConsoleLogFilter;
 /**
  * Custom pipeline step that can be used without a node and build wrapper.
  */
-public class LogFileFilterStep extends Step {
+public class LogFileFilterStep extends Step implements Serializable {
 
 	@DataBoundConstructor
     public LogFileFilterStep() {}
@@ -35,8 +36,6 @@ public class LogFileFilterStep extends Step {
      * Execution for {@link LogFileFilterStep}.
      */
     public static class Execution extends AbstractStepExecutionImpl {
-
-        private static final long serialVersionUID = 1L;
         
         protected Execution(StepContext context) {
         	super(context);
