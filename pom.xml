@@ -27,7 +27,7 @@
 
 	<name>Log File Filter Plugin</name>
 	<description>This plugin masks the desired content from the console output.</description>
-	<url>https://github.com/SoftwareBuildService/log-file-filter-plugin</url>
+	<url>https://github.com/jenkinsci/log-file-filter-plugin.git</url>
 
 	<!-- The default licence for Jenkins OSS Plugins is MIT. Substitute for 
 		the applicable one if needed. -->
@@ -40,9 +40,9 @@
 	</licenses>
 
     <scm>
-        <connection>scm:git:https://github.com/SoftwareBuildService/log-file-filter-plugin.git</connection>
-        <developerConnection>scm:git:https://github.com/SoftwareBuildService/log-file-filter-plugin.git</developerConnection>
-        <url>https://github.com/SoftwareBuildService/log-file-filter-plugin</url>
+        <connection>scm:git:https://github.com/jenkinsci/log-file-filter-plugin.git</connection>
+        <developerConnection>scm:git:https://github.com/jenkinsci/log-file-filter-plugin.git</developerConnection>
+        <url>https://github.com/jenkinsci/log-file-filter-plugin.git</url>
         <tag>HEAD</tag>
     </scm>
 
