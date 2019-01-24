@@ -10,9 +10,9 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import hudson.console.LineTransformationOutputStream;
-import jenkins.model.Jenkins;
 import org.apache.commons.io.IOUtils;
+
+import hudson.console.LineTransformationOutputStream;
 
 /**
  * This class deals with the actual filtering of the console using the configured regexes. Bear in mind that for now
@@ -39,15 +39,13 @@ public class LogFileFilterOutputStream extends LineTransformationOutputStream {
         this.jobName = jobName;
         this.logger = out;
         this.charset = charset;
-        Jenkins jenkinsInstance = Jenkins.getInstance();
-        LogFileFilterConfig.DescriptorImpl descriptor	
-		= (LogFileFilterConfig.DescriptorImpl) jenkinsInstance.getDescriptorOrDie(LogFileFilterConfig.class);
+        LogFileFilterConfig config = LogFileFilterConfig.get(); 
 
-		isEnabledGlobally = descriptor.isEnabledGlobally();
-		isEnabledDefaultRegexp = descriptor.isEnabledDefaultRegexp();
+		isEnabledGlobally = config.isEnabledGlobally();
+		isEnabledDefaultRegexp = config.isEnabledDefaultRegexp();
 		if (isEnabledGlobally) {
 			//Load regexes
-			customRegexpPairs = descriptor.getRegexpPairs();
+			customRegexpPairs = config.getRegexpPairs();
 			if (isEnabledDefaultRegexp) {
 				defaultRegexpPairs = DefaultRegexpPairs.getDefaultRegexes();
 			} else {
