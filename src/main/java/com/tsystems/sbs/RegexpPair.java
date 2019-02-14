@@ -1,5 +1,6 @@
 package com.tsystems.sbs;
 
+import java.io.Serializable;
 import java.util.regex.Pattern;
 
 /**
@@ -9,9 +10,10 @@ import java.util.regex.Pattern;
  * @author ccapdevi
  *
  */
-public class RegexpPair {
+public class RegexpPair implements Serializable {
 
-    private String regexp;
+	private static final long serialVersionUID = -5445325528650992703L;
+	private String regexp;
     private String replacement;
     private Pattern compiledRegexp;
 
