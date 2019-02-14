@@ -13,7 +13,19 @@ import hudson.model.Run;
 public class LogFileFilterConsoleLogFilter extends ConsoleLogFilter implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	
+	private LogFileFilterConfig config;
+	
+	public LogFileFilterConsoleLogFilter() {
+		super();
+	}
+	
+	public LogFileFilterConsoleLogFilter(LogFileFilterConfig config) {
+		super();
+		this.config = config;
+	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
     public OutputStream decorateLogger(Run build, OutputStream logger) throws IOException, InterruptedException {
     	if(logger == null)
@@ -29,7 +41,7 @@ public class LogFileFilterConsoleLogFilter extends ConsoleLogFilter implements S
     		displayName = "LogFileFilterLogger";
     	}
     	
-        return new LogFileFilterOutputStream(logger, charset, displayName);
+        return new LogFileFilterOutputStream(logger, charset, displayName, config);
     }
     
 	//Overriding this method allows filtering the logs of the slaves (master-slave communication)

@@ -60,7 +60,9 @@ public class LogFileFilterStep extends Step implements Serializable {
         private ConsoleLogFilter createConsoleLogFilter(StepContext context)
                 throws IOException, InterruptedException {
             ConsoleLogFilter original = context.get(ConsoleLogFilter.class);
-            ConsoleLogFilter subsequent = new LogFileFilterConsoleLogFilter();
+            //Get the LogFileFilter configuration
+            LogFileFilterConfig config = LogFileFilterConfig.get();
+            ConsoleLogFilter subsequent = new LogFileFilterConsoleLogFilter(config);
             return BodyInvoker.mergeConsoleLogFilters(original, subsequent);
         }
 

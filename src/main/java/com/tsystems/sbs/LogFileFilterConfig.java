@@ -24,7 +24,15 @@ public class LogFileFilterConfig extends GlobalConfiguration {
     private static final Logger LOGGER = Logger.getLogger(LogFileFilterConfig.class.getName());
     
     public static LogFileFilterConfig get() {
-    	return GlobalConfiguration.all().get(LogFileFilterConfig.class);
+    	LogFileFilterConfig config = null;
+    	try {
+    		config = GlobalConfiguration.all().get(LogFileFilterConfig.class);
+    	} catch (IllegalStateException e) {
+    		LOGGER.log(Level.SEVERE, "Config not found!");
+    		throw e;
+    	}
+    	LOGGER.log(Level.INFO, "Found config.");
+    	return config;
     }
 
 

@@ -11,6 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.log4j.lf5.LogLevel;
 
 import hudson.console.LineTransformationOutputStream;
 
@@ -35,11 +36,15 @@ public class LogFileFilterOutputStream extends LineTransformationOutputStream {
     private final String jobName;
 
 
-    public LogFileFilterOutputStream(OutputStream out, Charset charset, String jobName) {
+    public LogFileFilterOutputStream(OutputStream out, Charset charset, String jobName, LogFileFilterConfig config) {
         this.jobName = jobName;
         this.logger = out;
         this.charset = charset;
-        LogFileFilterConfig config = LogFileFilterConfig.get(); 
+        
+        if (config == null) {
+        	LOGGER.log(Level.WARNING, "LogFileFilter config not found! Retrieving it now.");
+        	config = LogFileFilterConfig.get();
+        }
 
 		isEnabledGlobally = config.isEnabledGlobally();
 		isEnabledDefaultRegexp = config.isEnabledDefaultRegexp();
