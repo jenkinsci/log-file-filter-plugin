@@ -58,7 +58,7 @@ public class LogFileFilterConfig extends GlobalConfiguration implements Serializ
     /**
      * Represents the custom regexp pairs specified by the user in the global settings.
      */
-    private final Set<RegexpPair> regexpPairs = new LinkedHashSet<RegexpPair>();
+    private Set<RegexpPair> regexpPairs = new LinkedHashSet<RegexpPair>();
 
     /**
      * This human readable name is used in the configuration screen.
@@ -137,5 +137,9 @@ public class LogFileFilterConfig extends GlobalConfiguration implements Serializ
     public Set<RegexpPair> getRegexpPairs() {
         return regexpPairs;
     }
+
+	public void setRegexpPairs(Set<RegexpPair> regexpPairs) {
+		this.regexpPairs = regexpPairs;
+	}
 
 }
