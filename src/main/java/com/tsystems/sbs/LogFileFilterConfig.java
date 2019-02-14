@@ -1,5 +1,6 @@
 package com.tsystems.sbs;
 
+import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.logging.Level;
@@ -19,9 +20,11 @@ import net.sf.json.JSONObject;
  *
  */
 @Extension
-public class LogFileFilterConfig extends GlobalConfiguration {
+public class LogFileFilterConfig extends GlobalConfiguration implements Serializable {
 
-    private static final Logger LOGGER = Logger.getLogger(LogFileFilterConfig.class.getName());
+	private static final long serialVersionUID = 5850114662289551496L;
+
+	private static final Logger LOGGER = Logger.getLogger(LogFileFilterConfig.class.getName());
     
     public static LogFileFilterConfig get() {
     	LogFileFilterConfig config = null;
