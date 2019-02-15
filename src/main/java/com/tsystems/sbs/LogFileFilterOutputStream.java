@@ -11,7 +11,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.lf5.LogLevel;
 
 import hudson.console.LineTransformationOutputStream;
 
