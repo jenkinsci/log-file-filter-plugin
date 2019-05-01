@@ -9,7 +9,7 @@
 
 	<groupId>com.tsystems.sbs</groupId>
 	<artifactId>log-file-filter</artifactId>
-	<version>1.11-SNAPSHOT</version>
+	<version>1.11</version>
 	<packaging>hpi</packaging>
 
 	<properties>
@@ -40,7 +40,7 @@
         <connection>scm:git:https://github.com/jenkinsci/log-file-filter-plugin.git</connection>
         <developerConnection>scm:git:https://github.com/jenkinsci/log-file-filter-plugin.git</developerConnection>
         <url>https://github.com/jenkinsci/log-file-filter-plugin.git</url>
-        <tag>HEAD</tag>
+        <tag>log-file-filter-1.11</tag>
     </scm>
 
 	<!-- If you want this to appear on the wiki page: <developers> <developer> 
