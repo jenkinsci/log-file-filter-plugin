@@ -2,8 +2,7 @@ package com.tsystems.sbs;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.List;
 
 /**
  * The default regexes (which use is activated by the checkbox 'Default regexp') are defined in this class.
@@ -13,14 +12,14 @@ import java.util.Set;
  */
 public final class DefaultRegexpPairs {
 
-    private final static Set<RegexpPair> DEFAULT_REGEXES
-            = Collections.unmodifiableSet(
-                new LinkedHashSet<RegexpPair>(Arrays.asList(
+    private final static List<RegexpPair> DEFAULT_REGEXES
+            = Collections.<RegexpPair>unmodifiableList(
+                    Arrays.<RegexpPair>asList(
                     new RegexpPair("(https?+://[^:\\s]++):[^@\\s]++@", "$1:********@"),//Passwd URL MASKING
                     new RegexpPair("password=\\S*", "password=********") //PASSWORD MASKING
-            )));
+            ));
 
-    public static Set<RegexpPair> getDefaultRegexes() {
+    public static List<RegexpPair> getDefaultRegexes() {
         return DEFAULT_REGEXES;
     }
 }

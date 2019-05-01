@@ -27,17 +27,17 @@
   		
 		<!-- Defines the regexp patterns to filter the console logs -->
 		<f:entry title="Custom regexp pairs" field="regexpPairs">
-			<f:repeatable name="Regexp Pairs" items="${descriptor.regexpPairs}" var="regexpPair">
+			<f:repeatable name="Regexp Pairs" field="regexpPairs">
 				<table width="100%">
 					<tr>
 						<td width="10%" align="right">Regexp</td>
 						<td width="30%">
-							<f:textbox name="regexpPair.regexp" value="${!empty regexpPair.regexp?regexpPair.regexp:''}"/>
+							<f:textbox field="regexp" />
 						</td>
 						
 						<td width="10%" align="right">Replacement</td>
 						<td width="30%">
-							<f:textbox name="regexpPair.replacement" value="${!empty regexpPair.replacement?regexpPair.replacement:''}"/>
+							<f:textbox field="replacement" />
 						</td>
 						<td width="20%" align="right"><f:repeatableDeleteButton/></td>
 					</tr>

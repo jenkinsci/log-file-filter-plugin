@@ -1,18 +1,17 @@
 package com.tsystems.sbs;
 
+import hudson.console.LineTransformationOutputStream;
+import org.apache.commons.io.IOUtils;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.Collections;
-import java.util.Set;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.commons.io.IOUtils;
-
-import hudson.console.LineTransformationOutputStream;
 
 /**
  * This class deals with the actual filtering of the console using the configured regexes. Bear in mind that for now
@@ -30,8 +29,8 @@ public class LogFileFilterOutputStream extends LineTransformationOutputStream {
     //Global settings
     private final boolean isEnabledGlobally;
     private final boolean isEnabledDefaultRegexp;
-    private final Set<RegexpPair> defaultRegexpPairs;
-    private final Set<RegexpPair> customRegexpPairs;
+    private final List<RegexpPair> defaultRegexpPairs;
+    private final List<RegexpPair> customRegexpPairs;
     private final String jobName;
 
 
@@ -53,11 +52,11 @@ public class LogFileFilterOutputStream extends LineTransformationOutputStream {
 			if (isEnabledDefaultRegexp) {
 				defaultRegexpPairs = DefaultRegexpPairs.getDefaultRegexes();
 			} else {
-				defaultRegexpPairs = Collections.emptySet();
+				defaultRegexpPairs = Collections.<RegexpPair>emptyList();
 			}
 		} else {
-			customRegexpPairs = Collections.emptySet();
-			defaultRegexpPairs = Collections.emptySet();
+			customRegexpPairs = Collections.<RegexpPair>emptyList();
+			defaultRegexpPairs = Collections.<RegexpPair>emptyList();
 		}
     }
 
