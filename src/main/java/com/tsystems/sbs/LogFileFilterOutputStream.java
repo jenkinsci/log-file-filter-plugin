@@ -100,7 +100,8 @@ public class LogFileFilterOutputStream extends LineTransformationOutputStream {
                     LOGGER.log(Level.FINE, 
                             "Filtered logfile for {0} output ''{1}''.", new Object[]{jobName, line});
                 }
-                if (line.length() > 0) {
+				
+                if (line.length() > 1) {
                     logger.write(line.getBytes(charset));
                 }
             } else {
