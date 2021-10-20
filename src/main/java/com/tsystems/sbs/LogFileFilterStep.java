@@ -24,7 +24,9 @@ import hudson.console.ConsoleLogFilter;
  */
 public class LogFileFilterStep extends Step implements Serializable {
 
-	@DataBoundConstructor
+    private static final long serialVersionUID = -4144901779369429596L;
+
+    @DataBoundConstructor
     public LogFileFilterStep() {}
 	
 	@Override
@@ -36,7 +38,9 @@ public class LogFileFilterStep extends Step implements Serializable {
      * Execution for {@link LogFileFilterStep}.
      */
     public static class Execution extends AbstractStepExecutionImpl {
-        
+
+        private static final long serialVersionUID = -3589168947547448938L;
+
         protected Execution(StepContext context) {
         	super(context);
         }
