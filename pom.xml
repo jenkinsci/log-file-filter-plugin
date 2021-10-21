@@ -9,12 +9,11 @@
 
 	<groupId>com.tsystems.sbs</groupId>
 	<artifactId>log-file-filter</artifactId>
-	<version>${revision}${changelist}</version>
+	<version>${changelist}</version>
 	<packaging>hpi</packaging>
 
 	<properties>
-		<revision>1.12</revision>
-		<changelist>-SNAPSHOT</changelist>
+		<changelist>999999-SNAPSHOT</changelist>
 		<gitHubRepo>jenkinsci/log-file-filter-plugin</gitHubRepo>
 		<jenkins.version>2.289.1</jenkins.version>
 		<java.level>8</java.level>

@@ -1,3 +1,1 @@
 _extends: .github
-name-template: Log File Filter $NEXT_MINOR_VERSION
-tag-template: log-file-filter-$NEXT_MINOR_VERSION
