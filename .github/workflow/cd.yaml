@@ -1,9 +1,11 @@
 name: cd
 on:
   workflow_dispatch:
-  check_run:
-    types:
-      - completed
+# for now only manually triggered
+# see https://www.jenkins.io/doc/developer/publishing/releasing-cd/#releasing
+#  check_run:
+#    types:
+#      - completed
 
 jobs:
   validate:
