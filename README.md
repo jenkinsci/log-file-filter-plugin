@@ -18,3 +18,17 @@ Note that the filtering is applied to all projects.
 ![Global configuration](readmeImages/consoleOutput.png "Console output")
 
 
+# Pipeline usage
+
+To enable the log file filter inside a pipeline, simply surround the code with the logFileFilter call:
+
+```groovy
+...
+logFileFilter {
+    ...
+  echo 'This is a filtered SECRET'
+    ...
+}
+echo 'Log file filter is not active here SECRET'
+...
+```
