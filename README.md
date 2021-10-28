@@ -1,4 +1,4 @@
-Jenkins File Filter Log Plugin
+Jenkins Log File Filter Plugin
 ===============================
 
 This plugin allows filtering Jenkins' console output by means of regular expressions. Some expressions are included by default; to see which are the default expressions go to the Jenkins global settings and click the "Enable default regexp" help icon. They can be turned off by unchecking the "Enable default regexp" checkbox.
