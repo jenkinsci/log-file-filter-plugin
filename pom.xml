@@ -1,114 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.jenkins-ci.plugins</groupId>
-		<artifactId>plugin</artifactId>
-		<version>4.29</version>
-	</parent>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.jenkins-ci.plugins</groupId>
+    <artifactId>plugin</artifactId>
+    <version>4.29</version>
+  </parent>
 
-	<groupId>com.tsystems.sbs</groupId>
-	<artifactId>log-file-filter</artifactId>
-	<version>${changelist}</version>
-	<packaging>hpi</packaging>
+  <groupId>com.tsystems.sbs</groupId>
+  <artifactId>log-file-filter</artifactId>
+  <version>${changelist}</version>
+  <packaging>hpi</packaging>
 
-	<properties>
-		<changelist>999999-SNAPSHOT</changelist>
-		<gitHubRepo>jenkinsci/log-file-filter-plugin</gitHubRepo>
-		<jenkins.version>2.289.1</jenkins.version>
-		<java.level>8</java.level>
-        <spotbugs.effort>Max</spotbugs.effort>
-        <spotbugs.failOnError>true</spotbugs.failOnError>
-        <spotbugs.threshold>Low</spotbugs.threshold>
-	</properties>
+  <name>Log File Filter Plugin</name>
+  <description>This plugin masks the desired content from the console output.</description>
+  <url>https://github.com/jenkinsci/log-file-filter-plugin.git</url>
 
-	<name>Log File Filter Plugin</name>
-	<description>This plugin masks the desired content from the console output.</description>
-	<url>https://github.com/jenkinsci/log-file-filter-plugin.git</url>
+  <licenses>
+    <license>
+      <name>MIT License</name>
+      <url>https://opensource.org/licenses/MIT</url>
+    </license>
+  </licenses>
 
-	<!-- The default licence for Jenkins OSS Plugins is MIT. Substitute for 
-		the applicable one if needed. -->
+  <scm>
+    <connection>scm:git:https://github.com/${gitHubRepo}.git</connection>
+    <developerConnection>scm:git:https://github.com/${gitHubRepo}.git</developerConnection>
+    <tag>${scmTag}</tag>
+    <url>https://github.com/${gitHubRepo}.git</url>
+  </scm>
 
-	<licenses>
-		<license>
-			<name>MIT License</name>
-			<url>http://opensource.org/licenses/MIT</url>
-		</license>
-	</licenses>
+  <properties>
+    <changelist>999999-SNAPSHOT</changelist>
+    <gitHubRepo>jenkinsci/log-file-filter-plugin</gitHubRepo>
+    <jenkins.version>2.289.1</jenkins.version>
+    <java.level>8</java.level>
+    <spotbugs.effort>Max</spotbugs.effort>
+    <spotbugs.failOnError>true</spotbugs.failOnError>
+    <spotbugs.threshold>Low</spotbugs.threshold>
+  </properties>
 
-    <scm>
-        <connection>scm:git:https://github.com/${gitHubRepo}.git</connection>
-        <developerConnection>scm:git:https://github.com/${gitHubRepo}.git</developerConnection>
-        <url>https://github.com/${gitHubRepo}.git</url>
-        <tag>${scmTag}</tag>
-    </scm>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>io.jenkins.tools.bom</groupId>
+        <artifactId>bom-2.289.x</artifactId>
+        <version>987.v4ade2e49fe70</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
-	<!-- If you want this to appear on the wiki page: <developers> <developer> 
-		<id>bhacker</id> <name>Bob Q. Hacker</name> <email>bhacker@nowhere.net</email> 
-		</developer> </developers> -->
-	<repositories>
-		<repository>
-			<id>repo.jenkins-ci.org</id>
-			<url>https://repo.jenkins-ci.org/public/</url>
-		</repository>
-	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>repo.jenkins-ci.org</id>
-			<url>https://repo.jenkins-ci.org/public/</url>
-		</pluginRepository>
-	</pluginRepositories>
-	<!-- If you want to depend on other plugins: <dependencies> <dependency> 
-		<groupId>org.jenkins-ci.plugins</groupId> <artifactId>credentials</artifactId> 
-		<version>1.9.4</version> </dependency> </dependencies> -->
+  <dependencies>
+    <dependency>
+      <groupId>org.jenkins-ci.plugins.workflow</groupId>
+      <artifactId>workflow-step-api</artifactId>
+    </dependency>
+  </dependencies>
 
-	<build>
-		<!-- <plugins> <plugin> <groupId>org.jenkins-ci.tools</groupId> <artifactId>maven-hpi-plugin</artifactId> 
-			<version>1.95</version>$NO-MVN-MAN-VER$ </plugin> </plugins> -->
-		<pluginManagement>
-			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings 
-					only. It has no influence on the Maven build itself. -->
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>
-											org.apache.maven.plugins
-										</groupId>
-										<artifactId>
-											maven-javadoc-plugin
-										</artifactId>
-										<versionRange>
-											[2.10.1,)
-										</versionRange>
-										<goals>
-											<goal>javadoc</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore />
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-	</build>
+  <repositories>
+    <repository>
+      <id>repo.jenkins-ci.org</id>
+      <url>https://repo.jenkins-ci.org/public/</url>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>repo.jenkins-ci.org</id>
+      <url>https://repo.jenkins-ci.org/public/</url>
+    </pluginRepository>
+  </pluginRepositories>
 
-	<dependencies>
-		<dependency>
-			<groupId>org.jenkins-ci.plugins.workflow</groupId>
-			<artifactId>workflow-step-api</artifactId>
-			<version>2.24</version>
-		</dependency>
-	</dependencies>
+  <build></build>
 
 </project>
