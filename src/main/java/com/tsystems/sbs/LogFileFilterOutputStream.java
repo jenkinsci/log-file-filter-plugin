@@ -33,7 +33,7 @@ public class LogFileFilterOutputStream extends LineTransformationOutputStream {
     private final List<RegexpPair> customRegexpPairs;
     private final String jobName;
 	
-	private final Pattern NON_WHITESPACE_PATTERN = Pattern.compile(".*\\S.*");
+	private final Pattern AT_LEAST_ONE_NON_WHITESPACE_PATTERN = Pattern.compile(".*\\S.*\\r?\\n?");
 
 
     public LogFileFilterOutputStream(OutputStream out, Charset charset, String jobName, LogFileFilterConfig config) {
@@ -103,7 +103,7 @@ public class LogFileFilterOutputStream extends LineTransformationOutputStream {
                             "Filtered logfile for {0} output ''{1}''.", new Object[]{jobName, line});
                 }
 				
-                if (NON_WHITESPACE_PATTERN.matcher(line).matches()) {
+                if (AT_LEAST_ONE_NON_WHITESPACE_PATTERN.matcher(line).matches()) {
                     logger.write(line.getBytes(charset));
                 }
             } else {
