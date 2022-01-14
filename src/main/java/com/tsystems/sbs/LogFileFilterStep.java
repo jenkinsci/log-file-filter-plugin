@@ -1,12 +1,8 @@
 package com.tsystems.sbs;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.annotation.Nonnull;
-
+import edu.umd.cs.findbugs.annotations.NonNull;
+import hudson.Extension;
+import hudson.console.ConsoleLogFilter;
 import org.jenkinsci.plugins.workflow.steps.AbstractStepExecutionImpl;
 import org.jenkinsci.plugins.workflow.steps.BodyExecutionCallback;
 import org.jenkinsci.plugins.workflow.steps.BodyInvoker;
@@ -16,8 +12,10 @@ import org.jenkinsci.plugins.workflow.steps.StepDescriptor;
 import org.jenkinsci.plugins.workflow.steps.StepExecution;
 import org.kohsuke.stapler.DataBoundConstructor;
 
-import hudson.Extension;
-import hudson.console.ConsoleLogFilter;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Custom pipeline step that can be used without a node and build wrapper.
@@ -74,7 +72,7 @@ public class LogFileFilterStep extends Step implements Serializable {
          * {@inheritDoc}
          */
         @Override
-        public void stop(@Nonnull Throwable cause) throws Exception {
+        public void stop(@NonNull Throwable cause) throws Exception {
             getContext().onFailure(cause);
         }
     }
