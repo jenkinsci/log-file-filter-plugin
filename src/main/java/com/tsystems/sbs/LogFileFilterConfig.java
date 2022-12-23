@@ -4,6 +4,7 @@ import hudson.Extension;
 import hudson.util.PersistedList;
 import jenkins.model.GlobalConfiguration;
 import org.kohsuke.stapler.DataBoundSetter;
+import edu.umd.cs.findbugs.annotations.SuppressWarnings;
 
 import java.io.Serializable;
 import java.util.List;
@@ -50,6 +51,7 @@ public class LogFileFilterConfig extends GlobalConfiguration implements Serializ
      */
     private List<RegexpPair> regexpPairs = new PersistedList<>(this);
 
+    @SuppressWarnings("MC_OVERRIDABLE_METHOD_CALL_IN_CONSTRUCTOR")
     public LogFileFilterConfig() {
         load();
     }
