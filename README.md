@@ -2,7 +2,7 @@ Jenkins Log File Filter Plugin
 ===============================
 
 [![Jenkins Build Status](https://ci.jenkins.io/buildStatus/icon?job=Plugins%2Flog-file-filter-plugin%2Fmain)](https://ci.jenkins.io/job/Plugins/job/log-file-filter-plugin/job/main/)
-[![Jenkins Plugins](https://img.shields.io/jenkins/plugin/v/log-file-filter)](https://plugins.jenkins.io/ansicolor/)
+[![Jenkins Plugins](https://img.shields.io/jenkins/plugin/v/log-file-filter)](https://plugins.jenkins.io/log-file-filter/)
 [![Jenkins Plugin installs](https://img.shields.io/jenkins/plugin/i/log-file-filter)](https://plugins.jenkins.io/log-file-filter/)
 
 
