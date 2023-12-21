@@ -28,7 +28,7 @@ public class DefaultRegexpPairsAWSTest {
         List<RegexpPair> defaultRegexpPairs = getDefaultRegexpPairs();
 
         // Define the input string
-        String input = "AWS_ACCESS_KEY_ID=ASIAQ42TKRXRW7GOEHMH AWS_SECRET_ACCESS_KEY=/lD8T9bXuZUW/F/8MutOB1vDXK2uG/gNHUe/d8bG AWS_SESSION_TOKEN=IQoJb3JpZ2luX2VjEF0aCWV1LXdlc3QtMSJHMEUCIQCML/uc20DoPT4BuxzRcspTZRWCLZeKxdhOCzt9GfVehQIgaSHU0fWmraj7iXv1UqNfagTaoPZZ189TyiIfabqKZNEqpAII1v//////////ARADGgwwNjE5MTQ5MTAxNzkiDDFOYsVLshKybCBrHSr4AYngLlJWHrHKeVcD9hfn+3Um37+ITcrq5mFbfC7uPuzV2JiGn3Sk1H8WcBLQTI87fdbqGNhKP9yC6ExDq3grTFkvHhUo4ctS/nQDrGoK8lRJIhymZO4DPB9BTLndUKaMHSIN";
+        String input = "AWS_ACCESS_KEY_ID=R2RHTXG7QKSRWMOHEIAMH4A AWS_SECRET_ACCESS_KEY=/lkasjdflkGH6özsldf AWS_SESSION_TOKEN=Z1XKqTnKIHd7eLJhBZb9QWVcG0Rj3f8z1uYgO4Xm6vNiD5F7cM9pAa/2SsPqRrTtEoUyHwC+DxGJlqWZ7b3JYm0QaPn6gTtKsVhC+DxGJlWbVfNkOYK6hI3eX1L0j2+//////////";
         String expected = "AWS_ACCESS_KEY_ID=******** AWS_SECRET_ACCESS_KEY=******** AWS_SESSION_TOKEN=********";
 
 
