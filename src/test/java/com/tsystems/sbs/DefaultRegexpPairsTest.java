@@ -8,7 +8,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 public class DefaultRegexpPairsTest {
-    /** Sorry, this is really just a dummy testcase. */
     @Test
     public void testDefaultPairs() {
         List<RegexpPair> defaultRegexpPairs = DefaultRegexpPairs.getDefaultRegexes();

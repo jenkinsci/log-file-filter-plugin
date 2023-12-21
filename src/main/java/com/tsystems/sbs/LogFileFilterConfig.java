@@ -45,6 +45,7 @@ public class LogFileFilterConfig extends GlobalConfiguration implements Serializ
      * Determines whether the regexp replacements which come fixed with the plugin are enabled.
      */
     private boolean enabledDefaultRegexp;
+    private boolean enabledDefaultRegexpAWS;
 
     /**
      * Represents the custom regexp pairs specified by the user in the global settings.
@@ -70,9 +71,19 @@ public class LogFileFilterConfig extends GlobalConfiguration implements Serializ
         return enabledDefaultRegexp;
     }
 
+    public boolean isEnabledDefaultRegexpAWS() {
+        return enabledDefaultRegexpAWS;
+    }
+
     @DataBoundSetter
     public void setEnabledDefaultRegexp(boolean enabledDefaultRegexp) {
         this.enabledDefaultRegexp = enabledDefaultRegexp;
+        save();
+    }
+
+    @DataBoundSetter
+    public void setEnabledDefaultRegexpAWS(boolean enabledDefaultRegexpAWS) {
+        this.enabledDefaultRegexpAWS = enabledDefaultRegexpAWS;
         save();
     }
 

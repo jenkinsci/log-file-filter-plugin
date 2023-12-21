@@ -19,7 +19,17 @@ public final class DefaultRegexpPairs {
                     new RegexpPair("password=\\S*", "password=********") //PASSWORD MASKING
             ));
 
+    private final static List<RegexpPair> DEFAULT_REGEXES_AWS
+            = Collections.<RegexpPair>unmodifiableList(
+            Arrays.<RegexpPair>asList(
+                    new RegexpPair("(AWS_[a-zA-Z_]+=)(\\S+)", "$1********") // AWS RegExp MASKING
+            ));
+
     public static List<RegexpPair> getDefaultRegexes() {
         return DEFAULT_REGEXES;
+    }
+
+    public static List<RegexpPair> getDefaultRegexesAWS() {
+        return DEFAULT_REGEXES_AWS;
     }
 }
