@@ -22,7 +22,8 @@ public final class DefaultRegexpPairs {
     private final static List<RegexpPair> DEFAULT_REGEXES_AWS
             = Collections.<RegexpPair>unmodifiableList(
             Arrays.<RegexpPair>asList(
-                    new RegexpPair("(AWS_[a-zA-Z_]+=)(\\S+)", "$1********") // AWS RegExp MASKING
+                    new RegexpPair("(AWS_[a-zA-Z_]+=)(\\S+)", "$1********"), // AWS RegExp MASKING
+                    new RegexpPair("(aws_[a-zA-Z_]+=)(\\S+)", "$1********")
             ));
 
     public static List<RegexpPair> getDefaultRegexes() {

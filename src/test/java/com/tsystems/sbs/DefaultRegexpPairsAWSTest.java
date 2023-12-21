@@ -1,11 +1,13 @@
 package com.tsystems.sbs;
 
+import hudson.console.LineTransformationOutputStream;
 import org.junit.Test;
 
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static org.codehaus.groovy.runtime.ResourceGroovyMethods.filterLine;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.is;
@@ -32,28 +34,35 @@ public class DefaultRegexpPairsAWSTest {
         String expected = "AWS_ACCESS_KEY_ID=******** AWS_SECRET_ACCESS_KEY=******** AWS_SESSION_TOKEN=********";
 
 
-        // Test the regular expression on each RegexpPair
-        // ToDo: Need to move this to a separate method and build a final result with all the replacements and regexes
+        StringBuilder replacedInput = new StringBuilder(input);
+
         for (RegexpPair pair : defaultRegexpPairs) {
             String pattern = pair.getRegexp();
             String replacement = pair.getReplacement();
 
-            // Create a Pattern object
             Pattern regexPattern = Pattern.compile(pattern);
+            Matcher matcher = regexPattern.matcher(replacedInput);
 
-            // Match the pattern against the input string
-            Matcher matcher = regexPattern.matcher(input);
+            while (matcher.find()) {
+                String matchedPattern = matcher.group();
+                String replacedString = replacement;
 
-            // Replace the matched pattern with the replacement
-            String replacedInput = matcher.replaceAll(replacement);
+                // Replace all occurrences of $n with the matched groups
+                for (int i = 1; i <= matcher.groupCount(); i++) {
+                    String group = matcher.group(i);
+                    replacedString = replacedString.replace("$" + i, group);
+                }
 
-            System.out.println("Pattern: " + replacedInput);
-
-            // Test the behavior
-            assertThat(replacedInput.contains(pattern), is(false));
-            assertEquals(expected, replacedInput);
-
+                replacedInput.replace(matcher.start(), matcher.end(), replacedString);
+                matcher.region(matcher.start() + replacedString.length(), replacedInput.length());
+            }
         }
+
+        String replacedInputString = replacedInput.toString();
+        System.out.println("Replaced input result: " + replacedInputString);
+
+        // Test the behavior
+        assertEquals(expected, replacedInputString);
     }
 }
 
