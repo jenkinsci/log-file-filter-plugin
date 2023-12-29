@@ -26,11 +26,22 @@ public final class DefaultRegexpPairs {
                     new RegexpPair("(aws_[a-zA-Z_]+=)(\\S+)", "$1********")
             ));
 
+    private final static List<RegexpPair> DEFAULT_REGEXES_DD
+            = Collections.<RegexpPair>unmodifiableList(
+            Arrays.<RegexpPair>asList(
+                    new RegexpPair("(\\b([a-zA-Z-0-9]{32})\\b)", "********"), // Datadog RegExp MASKING API KEY
+                    new RegexpPair("(\\b([a-zA-Z-0-9]{40})\\b)", "********") // Datadog RegExp MASKING APP KEY
+            ));
+
     public static List<RegexpPair> getDefaultRegexes() {
         return DEFAULT_REGEXES;
     }
 
     public static List<RegexpPair> getDefaultRegexesAWS() {
         return DEFAULT_REGEXES_AWS;
+    }
+
+    public static List<RegexpPair> getDefaultRegexesDD() {
+        return DEFAULT_REGEXES_DD;
     }
 }
