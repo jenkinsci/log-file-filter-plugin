@@ -1,5 +1,6 @@
 package com.tsystems.sbs;
 
+import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
 import hudson.model.AbstractDescribableImpl;
 import hudson.model.Descriptor;
@@ -22,6 +23,11 @@ public class RegexpPair extends AbstractDescribableImpl<RegexpPair> implements S
 	private String regexp;
     private String replacement;
     private transient Pattern compiledRegexp;
+
+    @Override
+    public String toString() {
+        return "RegexpPair{pattern=" + regexp + ", replacement=" + replacement + "}";
+    }
 
     @DataBoundConstructor
     public RegexpPair(String regexp, String replacement) {

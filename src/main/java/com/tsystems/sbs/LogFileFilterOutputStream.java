@@ -6,6 +6,7 @@ import org.apache.commons.io.IOUtils;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
@@ -29,6 +30,7 @@ public class LogFileFilterOutputStream extends LineTransformationOutputStream {
     //Global settings
     private final boolean isEnabledGlobally;
     private final boolean isEnabledDefaultRegexp;
+    private final boolean isEnabledDefaultRegexpAWS;
     private final List<RegexpPair> defaultRegexpPairs;
     private final List<RegexpPair> customRegexpPairs;
     private final String jobName;
@@ -47,19 +49,27 @@ public class LogFileFilterOutputStream extends LineTransformationOutputStream {
         }
 
 		isEnabledGlobally = config.isEnabledGlobally();
-		isEnabledDefaultRegexp = config.isEnabledDefaultRegexp();
-		if (isEnabledGlobally) {
-			//Load regexes
-			customRegexpPairs = config.getRegexpPairs();
-			if (isEnabledDefaultRegexp) {
-				defaultRegexpPairs = DefaultRegexpPairs.getDefaultRegexes();
-			} else {
-				defaultRegexpPairs = Collections.<RegexpPair>emptyList();
-			}
-		} else {
-			customRegexpPairs = Collections.<RegexpPair>emptyList();
-			defaultRegexpPairs = Collections.<RegexpPair>emptyList();
-		}
+        isEnabledDefaultRegexp = config.isEnabledDefaultRegexp();
+        isEnabledDefaultRegexpAWS = config.isEnabledDefaultRegexpAWS();
+
+        if (isEnabledGlobally) {
+            // Load regexes
+            customRegexpPairs = config.getRegexpPairs();
+            defaultRegexpPairs = new ArrayList<>();
+            if (isEnabledDefaultRegexp) {
+                defaultRegexpPairs.addAll(DefaultRegexpPairs.getDefaultRegexes());
+            }
+            if (isEnabledDefaultRegexpAWS) {
+                defaultRegexpPairs.addAll(DefaultRegexpPairs.getDefaultRegexesAWS());
+            }
+            // Log defaultRegexpPairs
+            for (RegexpPair pair : defaultRegexpPairs) {
+                LOGGER.log(Level.INFO, pair.toString());
+            }
+        } else {
+            customRegexpPairs = Collections.<RegexpPair>emptyList();
+            defaultRegexpPairs = Collections.<RegexpPair>emptyList();
+        }
     }
 
     @Override
