@@ -17,21 +17,22 @@
 		<!-- Table rows (regexes) -->
 		<tr>
 			<td>Masks Datadog APP secrets</td>
-			<td>(\b([a-zA-Z-0-9]{32})\b)</td>
-			<td>********</td>
+			<td>((?i)(\bdatadog|dd|dogapi\b).*)(\b([a-zA-Z-0-9]{40})\b)</td>
+			<td>$1********</td>
 			<td>
 				<ul>
-					<li>aB3cD7eF1gH9iJ5kL0mN2oP4qR6sT8uV -> ********</li>
+					<li>"datadog key = 3c0c3965368a6b10f7640dbda46abfd2 secret= 3c0c3965368a6b10f7640dbda46abfdca981c2d3" -> <b>datadog key = ******** secret= ********</b></li>
 				</ul>
 			</td>
 		</tr>
 		<tr>
 			<td>Masks Datadog API secrets</td>
-			<td>(\b([a-zA-Z-0-9]{40})\b)</td>
-			<td>********</td>
+			<td>((?i)(\bdatadog|dd|dogapi\b).*)(\b([a-zA-Z-0-9]{32})\b)</td>
+			<td>$1********</td>
 			<td>
 				<ul>
-					<li>aB3cD7eF1gH9iJ5kL0mN2oP4qR6sT8uV1wX3yZ50 -> ********</li>
+					<li>dAtAdOg token = "3c0c3965368a6b10f7640dbda46abfdc"; -> <b>dAtAdOg token = "********";</b></li>
+					<li>curl -X GET "https://api.datadoghq.eu/api/v1/validate" -H "Accept: application/json" -H "DD-API-KEY: characteristicallycharacteristic" -> <b>curl -X GET "https://api.datadoghq.eu/api/v1/validate" -H "Accept: application/json" -H "DD-API-KEY: ********"</b></li>
 				</ul>
 			</td>
 		</tr>

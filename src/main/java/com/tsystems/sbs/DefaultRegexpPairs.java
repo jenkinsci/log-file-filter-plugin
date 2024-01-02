@@ -29,8 +29,8 @@ public final class DefaultRegexpPairs {
     private final static List<RegexpPair> DEFAULT_REGEXES_DD
             = Collections.<RegexpPair>unmodifiableList(
             Arrays.<RegexpPair>asList(
-                    new RegexpPair("(\\b([a-zA-Z-0-9]{32})\\b)", "********"), // Datadog RegExp MASKING API KEY
-                    new RegexpPair("(\\b([a-zA-Z-0-9]{40})\\b)", "********") // Datadog RegExp MASKING APP KEY
+                    new RegexpPair("((?i)(\\bdatadog|dd|dogapi\\b).*)(\\b([a-zA-Z-0-9]{32})\\b)", "$1********"), // Datadog RegExp MASKING API KEY
+                    new RegexpPair("((?i)(\\bdatadog|dd|dogapi\\b).*)(\\b([a-zA-Z-0-9]{40})\\b)", "$1********") // Datadog RegExp MASKING APP KEY
             ));
 
     public static List<RegexpPair> getDefaultRegexes() {
