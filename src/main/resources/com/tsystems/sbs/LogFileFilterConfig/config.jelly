@@ -29,10 +29,6 @@
 			<f:checkbox checked="${it.enabledDefaultRegexpAWS}" />
 		</f:entry>
 
-		<f:entry title="Enable Amazon AWS regexp" field="enabledDefaultRegexpAWS">
-			<f:checkbox checked="${it.enabledDefaultRegexpAWS}" />
-		</f:entry>
-
 		<f:entry title="Enable Datadog API/APP regexp" field="enabledDefaultRegexpDD">
 			<f:checkbox checked="${it.enabledDefaultRegexpDD}" />
 		</f:entry>
