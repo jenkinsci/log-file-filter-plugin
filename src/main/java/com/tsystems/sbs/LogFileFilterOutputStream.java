@@ -31,6 +31,7 @@ public class LogFileFilterOutputStream extends LineTransformationOutputStream {
     private final boolean isEnabledGlobally;
     private final boolean isEnabledDefaultRegexp;
     private final boolean isEnabledDefaultRegexpAWS;
+    private final boolean isEnabledDefaultRegexpDD;
     private final List<RegexpPair> defaultRegexpPairs;
     private final List<RegexpPair> customRegexpPairs;
     private final String jobName;
@@ -51,6 +52,7 @@ public class LogFileFilterOutputStream extends LineTransformationOutputStream {
 		isEnabledGlobally = config.isEnabledGlobally();
         isEnabledDefaultRegexp = config.isEnabledDefaultRegexp();
         isEnabledDefaultRegexpAWS = config.isEnabledDefaultRegexpAWS();
+        isEnabledDefaultRegexpDD = config.isEnabledDefaultRegexpDD();
 
         if (isEnabledGlobally) {
             // Load regexes
@@ -62,6 +64,10 @@ public class LogFileFilterOutputStream extends LineTransformationOutputStream {
             if (isEnabledDefaultRegexpAWS) {
                 defaultRegexpPairs.addAll(DefaultRegexpPairs.getDefaultRegexesAWS());
             }
+            if (isEnabledDefaultRegexpDD) {
+                defaultRegexpPairs.addAll(DefaultRegexpPairs.getDefaultRegexesDD());
+            }
+
             // Log defaultRegexpPairs
             for (RegexpPair pair : defaultRegexpPairs) {
                 LOGGER.log(Level.INFO, pair.toString());

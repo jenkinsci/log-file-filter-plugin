@@ -46,6 +46,7 @@ public class LogFileFilterConfig extends GlobalConfiguration implements Serializ
      */
     private boolean enabledDefaultRegexp;
     private boolean enabledDefaultRegexpAWS;
+    private boolean enabledDefaultRegexpDD;
 
     /**
      * Represents the custom regexp pairs specified by the user in the global settings.
@@ -75,6 +76,10 @@ public class LogFileFilterConfig extends GlobalConfiguration implements Serializ
         return enabledDefaultRegexpAWS;
     }
 
+    public boolean isEnabledDefaultRegexpDD() {
+        return enabledDefaultRegexpDD;
+    }
+
     @DataBoundSetter
     public void setEnabledDefaultRegexp(boolean enabledDefaultRegexp) {
         this.enabledDefaultRegexp = enabledDefaultRegexp;
@@ -84,6 +89,12 @@ public class LogFileFilterConfig extends GlobalConfiguration implements Serializ
     @DataBoundSetter
     public void setEnabledDefaultRegexpAWS(boolean enabledDefaultRegexpAWS) {
         this.enabledDefaultRegexpAWS = enabledDefaultRegexpAWS;
+        save();
+    }
+
+    @DataBoundSetter
+    public void setEnabledDefaultRegexpDD(boolean enabledDefaultRegexpDD) {
+        this.enabledDefaultRegexpDD = enabledDefaultRegexpDD;
         save();
     }
 
