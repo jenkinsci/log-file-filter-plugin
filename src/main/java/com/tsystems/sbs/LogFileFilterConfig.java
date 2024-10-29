@@ -32,7 +32,7 @@ public class LogFileFilterConfig extends GlobalConfiguration implements Serializ
     		LOGGER.log(Level.SEVERE, "Config not found! " + e);
     		throw e;
     	}
-    	LOGGER.log(Level.INFO, "Found config.");
+    	LOGGER.log(Level.CONFIG, "Found config.");
     	return config;
     }
 

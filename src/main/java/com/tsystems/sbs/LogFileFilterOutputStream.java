@@ -70,7 +70,7 @@ public class LogFileFilterOutputStream extends LineTransformationOutputStream {
 
             // Log defaultRegexpPairs
             for (RegexpPair pair : defaultRegexpPairs) {
-                LOGGER.log(Level.INFO, pair.toString());
+                LOGGER.log(Level.CONFIG, pair.toString());
             }
         } else {
             customRegexpPairs = Collections.<RegexpPair>emptyList();
