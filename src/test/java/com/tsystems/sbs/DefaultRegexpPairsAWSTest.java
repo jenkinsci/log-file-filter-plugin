@@ -1,16 +1,13 @@
 package com.tsystems.sbs;
 
-import hudson.console.LineTransformationOutputStream;
 import org.junit.Test;
 
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.codehaus.groovy.runtime.ResourceGroovyMethods.filterLine;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 
 
@@ -34,6 +31,57 @@ public class DefaultRegexpPairsAWSTest {
         String expected = "AWS_ACCESS_KEY_ID=******** AWS_SECRET_ACCESS_KEY=******** AWS_SESSION_TOKEN=********";
 
 
+        String replacedInputString = maskIntput(input, defaultRegexpPairs);
+        System.out.println("Replaced input result: " + replacedInputString);
+
+        // Test the behavior
+        assertEquals(expected, replacedInputString);
+    }
+
+    @Test
+    public void testDefaultJsonKeyValuePairsMasking() {
+        List<RegexpPair> defaultRegexpPairs = getDefaultRegexpPairs();
+
+        String input = "log message with json {" +
+                "\"ansible_ec2_iam_security_credentials_instance_profiles_accesskeyid\": \"ASIAU5QBETVVXEXAMPLE\"," +
+                "\"ansible_ec2_iam_security_credentials_instance_profiles_secretaccesskey\": \"/lD8T9bXuZUW/F/8MutOB1vDXK2uG/gNHUe/d8bG\"," +
+                "\"ansible_ec2_iam_security_credentials_instance_profiles_token\": \"Z1XKqTnKIHd7eLJhBZb9QWVcG0Rj3f8z1uYgO4Xm6vNiD5F7cM9pA\"" +
+                "}";
+        String expected = "log message with json {" +
+                "\"accesskeyid\": \"********\"," +
+                "\"secretaccesskey\": \"********\"," +
+                "\"token\": \"********\"" +
+                "}";
+
+        String replacedInputString = maskIntput(input, defaultRegexpPairs);
+
+        // Test the behavior
+        assertEquals(expected, replacedInputString);
+    }
+
+
+    @Test
+    public void testDefaultEscapedJsonKeyValuePairsMasking() {
+        List<RegexpPair> defaultRegexpPairs = getDefaultRegexpPairs();
+
+        String input = "log message with escaped json {" +
+                "\\\"AccessKeyId\\\" : \\\"ASIAU5QBETVVXEXAMPLE\\\", " +
+                "\\\"SecretAccessKey\\\" : \\\"/lD8T9bXuZUW/F/8MutOB1vDXK2uG/gNHUe/d8bG\\\"," +
+                "\\\"Token\\\" : \\\"Z1XKqTnKIHd7eLJhBZb9QWVcG0Rj3f8z1uYgO4Xm6vNiD5F7cM9pA\\\"" +
+                "}";
+        String expected = "log message with escaped json {" +
+                "\\\"AccessKeyId\\\": \\\"********\\\", " +
+                "\\\"SecretAccessKey\\\": \\\"********\\\"," +
+                "\\\"Token\\\": \\\"********\\\"" +
+                "}";
+
+        String replacedInputString = maskIntput(input, defaultRegexpPairs);
+
+        // Test the behavior
+        assertEquals(expected, replacedInputString);
+    }
+
+    private static String maskIntput(String input, List<RegexpPair> defaultRegexpPairs) {
         StringBuilder replacedInput = new StringBuilder(input);
 
         for (RegexpPair pair : defaultRegexpPairs) {
@@ -44,7 +92,6 @@ public class DefaultRegexpPairsAWSTest {
             Matcher matcher = regexPattern.matcher(replacedInput);
 
             while (matcher.find()) {
-                String matchedPattern = matcher.group();
                 String replacedString = replacement;
 
                 // Replace all occurrences of $n with the matched groups
@@ -58,11 +105,7 @@ public class DefaultRegexpPairsAWSTest {
             }
         }
 
-        String replacedInputString = replacedInput.toString();
-        System.out.println("Replaced input result: " + replacedInputString);
-
-        // Test the behavior
-        assertEquals(expected, replacedInputString);
+        return replacedInput.toString();
     }
 }
 
