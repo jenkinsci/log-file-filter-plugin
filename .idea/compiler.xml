@@ -9,8 +9,10 @@
         <module name="log-file-filter" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="log-file-filter" target="1.8" />
-    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="log-file-filter" options="-parameters -proc:full" />
+    </option>
   </component>
 </project>
