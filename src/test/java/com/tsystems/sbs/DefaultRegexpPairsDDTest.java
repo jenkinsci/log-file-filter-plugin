@@ -1,6 +1,6 @@
 package com.tsystems.sbs;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -8,29 +8,28 @@ import java.util.regex.Pattern;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+class DefaultRegexpPairsDDTest {
 
-public class DefaultRegexpPairsDDTest {
     private List<RegexpPair> getDefaultRegexpPairs() {
         return DefaultRegexpPairs.getDefaultRegexesDD();
     }
+
     @Test
-    public void testDefaultPairsList() {
+    void testDefaultPairsList() {
         List<RegexpPair> defaultRegexpPairs = getDefaultRegexpPairs();
         assertThat(defaultRegexpPairs.size(), greaterThan(0));
-
     }
 
     @Test
-    public void testDefaultPairsApi() {
+    void testDefaultPairsApi() {
         List<RegexpPair> defaultRegexpPairs = getDefaultRegexpPairs();
 
         // Define the input string 32 characters
         String input = "curl -X GET \"https://api.datadoghq.eu/api/v1/validate\" -H \"Accept: application/json\" -H \"DD-API-KEY: characteristicallycharacteristic\"";
         String expected = "curl -X GET \"https://api.datadoghq.eu/api/v1/validate\" -H \"Accept: application/json\" -H \"DD-API-KEY: ********\"";
 
-
         StringBuilder replacedInput = new StringBuilder(input);
 
         for (RegexpPair pair : defaultRegexpPairs) {
@@ -63,14 +62,13 @@ public class DefaultRegexpPairsDDTest {
     }
 
     @Test
-    public void testDefaultPairsKey() {
+    void testDefaultPairsKey() {
         List<RegexpPair> defaultRegexpPairs = getDefaultRegexpPairs();
 
         // Define the input string 32 characters
         String input = "datadog key = 3c0c3965368a6b10f7640dbda46abfd2 secret= 3c0c3965368a6b10f7640dbda46abfdca981c2d3";
         String expected = "datadog key = ******** secret= ********";
 
-
         StringBuilder replacedInput = new StringBuilder(input);
 
         for (RegexpPair pair : defaultRegexpPairs) {
@@ -101,14 +99,14 @@ public class DefaultRegexpPairsDDTest {
         // Test the behavior
         assertEquals(expected, replacedInputString);
     }
+
     @Test
-    public void testDefaultPairsToken() {
+    void testDefaultPairsToken() {
         List<RegexpPair> defaultRegexpPairs = getDefaultRegexpPairs();
 
         // Define the input string 32 characters
         String input = "dAtAdOg token = \"3c0c3965368a6b10f7640dbda46abfdc\";";
         String expected = "dAtAdOg token = \"********\";";
-
 
         StringBuilder replacedInput = new StringBuilder(input);
 
@@ -141,4 +139,3 @@ public class DefaultRegexpPairsDDTest {
         assertEquals(expected, replacedInputString);
     }
 }
-
